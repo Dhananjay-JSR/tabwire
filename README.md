@@ -1,18 +1,18 @@
-# webmcp-bridge
+# tabwire
 
 Give Claude Code, Codex, Zed or any MCP client the **WebMCP tools of the pages open in your browser**, and nothing else.
 
-Web pages can register tools for AI agents with [WebMCP](https://github.com/webmachinelearning/webmcp) (`document.modelContext.registerTool`). `webmcp-bridge` is a small Rust binary that finds those tools in your running Chrome or Brave and serves them to your agent as ordinary MCP tools, under their real names.
+Web pages can register tools for AI agents with [WebMCP](https://github.com/webmachinelearning/webmcp) (`document.modelContext.registerTool`). `tabwire` is a small Rust binary that finds those tools in your running Chrome or Brave and serves them to your agent as ordinary MCP tools, under their real names.
 
 ```
-Agent (MCP over stdio) ──▶ webmcp-bridge ──▶ your browser (DevTools protocol, localhost) ──▶ the page's tools
+Agent (MCP over stdio) ──▶ tabwire ──▶ your browser (DevTools protocol, localhost) ──▶ the page's tools
 ```
 
 ## Why not chrome-devtools-mcp?
 
 [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) can reach WebMCP tools too, with `--categoryExperimentalWebmcp`. It is a general browser-automation server, so:
 
-| | chrome-devtools-mcp | webmcp-bridge |
+| | chrome-devtools-mcp | tabwire |
 |---|---|---|
 | Tools your agent sees | 8-34 browser tools (click, navigate, evaluate, screenshot, ...) plus a two-step proxy | Only the page's tools, by name (e.g. `tldraw_pen`) |
 | Calling a page tool | `list_webmcp_tools`, then `execute_webmcp_tool` with the input as a JSON string | One call, with the tool's own input schema |
@@ -24,11 +24,11 @@ Agent (MCP over stdio) ──▶ webmcp-bridge ──▶ your browser (DevTools 
 
 1. **Enable WebMCP**: open `chrome://flags/#enable-webmcp-testing`, choose **Enabled** and relaunch. In Brave the page is `brave://flags/#enable-webmcp-testing`; choose **Enabled**, not "Default (Enabled)", which leaves it off.
 2. **Allow remote debugging**: open `chrome://inspect/#remote-debugging` (Brave: `brave://inspect/#remote-debugging`) and allow it. The browser may ask you to approve the first connection.
-3. **Build** (stable Rust): `cargo build --release`, then put `target/release/webmcp-bridge` on your `PATH`. CI also builds macOS and Linux binaries.
+3. **Build** (stable Rust): `cargo build --release`, then put `target/release/tabwire` on your `PATH`. CI also builds macOS and Linux binaries.
 4. **Check**: open a page that registers WebMCP tools and run
 
    ```bash
-   webmcp-bridge doctor --url tldraw.com
+   tabwire doctor --url tldraw.com
    ```
 
    It lists your browser profiles, connects, and prints the tools it would serve, with the fix for anything missing.
@@ -38,14 +38,14 @@ Agent (MCP over stdio) ──▶ webmcp-bridge ──▶ your browser (DevTools 
 **Claude Code**
 
 ```bash
-claude mcp add webmcp -- webmcp-bridge --url tldraw.com
+claude mcp add tabwire -- tabwire --url tldraw.com
 ```
 
 **Codex** (`~/.codex/config.toml`)
 
 ```toml
-[mcp_servers.webmcp]
-command = "webmcp-bridge"
+[mcp_servers.tabwire]
+command = "tabwire"
 args = ["--url", "tldraw.com"]
 ```
 
@@ -53,7 +53,7 @@ args = ["--url", "tldraw.com"]
 
 ```json
 "context_servers": {
-  "webmcp": { "command": "webmcp-bridge", "args": ["--url", "tldraw.com"] }
+  "tabwire": { "command": "tabwire", "args": ["--url", "tldraw.com"] }
 }
 ```
 

@@ -60,8 +60,8 @@ jobs:
           targets: ${{ matrix.target }}
       - run: cargo build --release --target ${{ matrix.target }}
       - name: Report size
-        run: ls -l target/${{ matrix.target }}/release/webmcp-bridge
+        run: ls -l target/${{ matrix.target }}/release/tabwire
       - uses: actions/upload-artifact@v4
         with:
-          name: webmcp-bridge-${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/webmcp-bridge
+          name: tabwire-${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/tabwire

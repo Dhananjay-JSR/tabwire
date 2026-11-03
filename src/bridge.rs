@@ -94,7 +94,7 @@ impl Bridge {
     fn problem(&self, msg: String) {
         let mut st = self.lock();
         if st.last_problem.as_deref() != Some(msg.as_str()) {
-            eprintln!("webmcp-bridge: {msg}");
+            eprintln!("tabwire: {msg}");
             st.last_problem = Some(msg);
         }
     }
@@ -151,7 +151,7 @@ impl Bridge {
             let mut st = self.lock();
             st.last_problem = None;
         }
-        eprintln!("webmcp-bridge: connected to {endpoint}");
+        eprintln!("tabwire: connected to {endpoint}");
         // Existing tabs arrive as targetCreated events right away; settle them before the first list.
         loop {
             match rx.recv_timeout(Duration::from_millis(150)) {
@@ -372,7 +372,7 @@ impl Bridge {
                 self.send(&reply(json!({
                     "protocolVersion": version,
                     "capabilities": { "tools": { "listChanged": true } },
-                    "serverInfo": { "name": "webmcp-bridge", "version": env!("CARGO_PKG_VERSION") },
+                    "serverInfo": { "name": "tabwire", "version": env!("CARGO_PKG_VERSION") },
                     "instructions": "These tools are registered by web pages open in the user's browser (WebMCP). They change as tabs open and close."
                 })));
             }

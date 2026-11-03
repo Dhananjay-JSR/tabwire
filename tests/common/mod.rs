@@ -16,13 +16,13 @@ pub struct Mcp {
 
 impl Mcp {
     pub fn start(args: &[&str]) -> (Mcp, Child) {
-        let mut child = Command::new(env!("CARGO_BIN_EXE_webmcp-bridge"))
+        let mut child = Command::new(env!("CARGO_BIN_EXE_tabwire"))
             .args(args)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::inherit())
             .spawn()
-            .expect("start webmcp-bridge");
+            .expect("start tabwire");
         let stdout = child.stdout.take().unwrap();
         let (tx, lines) = mpsc::channel();
         std::thread::spawn(move || {

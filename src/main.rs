@@ -1,4 +1,4 @@
-//! webmcp-bridge: serves the WebMCP tools of the pages open in your browser to any MCP client.
+//! tabwire: serves the WebMCP tools of the pages open in your browser to any MCP client.
 
 mod bridge;
 mod cdp;
@@ -10,12 +10,11 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 use std::time::{Duration, Instant};
 
-const HELP: &str =
-    "webmcp-bridge: give MCP clients the WebMCP tools of the pages open in your browser.
+const HELP: &str = "tabwire: give MCP clients the WebMCP tools of the pages open in your browser.
 
 USAGE
-  webmcp-bridge [OPTIONS]          serve MCP over stdio (what your agent runs)
-  webmcp-bridge doctor [OPTIONS]   check the browser setup and list the tools it would serve
+  tabwire [OPTIONS]          serve MCP over stdio (what your agent runs)
+  tabwire doctor [OPTIONS]   check the browser setup and list the tools it would serve
 
 OPTIONS
   --url <text>             only pages whose URL contains <text> (repeatable), e.g. --url tldraw.com
@@ -51,7 +50,7 @@ fn parse_args(raw: Vec<String>) -> Result<Option<Args>, String> {
                 return Ok(None);
             }
             "-V" | "--version" => {
-                println!("webmcp-bridge {}", env!("CARGO_PKG_VERSION"));
+                println!("tabwire {}", env!("CARGO_PKG_VERSION"));
                 return Ok(None);
             }
             "doctor" => doctor = true,
@@ -79,7 +78,7 @@ fn main() -> ExitCode {
         Ok(Some(a)) => a,
         Ok(None) => return ExitCode::SUCCESS,
         Err(e) => {
-            eprintln!("webmcp-bridge: {e}");
+            eprintln!("tabwire: {e}");
             return ExitCode::from(2);
         }
     };
@@ -98,7 +97,7 @@ fn main() -> ExitCode {
 
 /// Prints what the bridge would find, step by step, with the fix for each missing piece.
 fn doctor(cfg: &bridge::Config) -> ExitCode {
-    println!("webmcp-bridge {} doctor\n", env!("CARGO_PKG_VERSION"));
+    println!("tabwire {} doctor\n", env!("CARGO_PKG_VERSION"));
     println!("Browser profiles:");
     let mut list = discover::candidates();
     if let Some(dir) = &cfg.user_data_dir {

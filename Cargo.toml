@@ -1,10 +1,10 @@
 [package]
-name = "webmcp-bridge"
+name = "tabwire"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "Serve the WebMCP tools of the pages open in your browser to any MCP client, over the DevTools protocol"
-repository = "https://github.com/Dhananjay-JSR/webmcp-bridge-rs"
+repository = "https://github.com/Dhananjay-JSR/tabwire"
 publish = false
 
 [dependencies]

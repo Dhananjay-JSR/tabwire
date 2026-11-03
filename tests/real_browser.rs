@@ -11,7 +11,7 @@ use std::path::PathBuf;
 use std::process::{Child, Command, Stdio};
 use std::time::{Duration, Instant};
 
-const PAGE: &str = r#"<!doctype html><title>webmcp-bridge test</title><script>
+const PAGE: &str = r#"<!doctype html><title>tabwire test</title><script>
 const mc = document.modelContext || navigator.modelContext;
 mc.registerTool({ name: 'echo', description: 'Echo text back', annotations: { readOnlyHint: true },
   inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] },
