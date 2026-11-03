@@ -24,7 +24,7 @@ Agent (MCP over stdio) ──▶ tabwire ──▶ your browser (DevTools protoc
 
 1. **Enable WebMCP**: open `chrome://flags/#enable-webmcp-testing`, choose **Enabled** and relaunch. In Brave the page is `brave://flags/#enable-webmcp-testing`; choose **Enabled**, not "Default (Enabled)", which leaves it off.
 2. **Allow remote debugging**: open `chrome://inspect/#remote-debugging` (Brave: `brave://inspect/#remote-debugging`) and allow it. The browser may ask you to approve the first connection.
-3. **Build** (stable Rust): `cargo build --release`, then put `target/release/tabwire` on your `PATH`. CI also builds macOS and Linux binaries.
+3. **Install**: download the binary for your system from [Releases](https://github.com/Dhananjay-JSR/tabwire/releases/latest), unpack it and put `tabwire` on your `PATH`. Or build it: `cargo install --git https://github.com/Dhananjay-JSR/tabwire`.
 4. **Check**: open a page that registers WebMCP tools and run
 
    ```bash
@@ -92,7 +92,7 @@ Measured end to end against Chrome 154 on an M-series Mac: **about 0.22 ms per t
 ## Limitations
 
 - WebMCP is experimental and behind a flag in Chrome and Brave; its DevTools domain may change.
-- macOS and Linux. Windows is untested.
+- macOS, Linux and Windows; CI runs the real-browser test on all three.
 - MCP over stdio only.
 
 ## Tests

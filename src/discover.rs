@@ -24,7 +24,16 @@ const PROFILES: &[(&str, &str)] = &[
     ),
     ("Chromium", "Library/Application Support/Chromium"),
 ];
-#[cfg(not(target_os = "macos"))]
+#[cfg(windows)]
+const PROFILES: &[(&str, &str)] = &[
+    ("Chrome", r"Google\Chrome\User Data"),
+    ("Brave", r"BraveSoftware\Brave-Browser\User Data"),
+    ("Edge", r"Microsoft\Edge\User Data"),
+    ("Chrome Beta", r"Google\Chrome Beta\User Data"),
+    ("Chrome Canary", r"Google\Chrome SxS\User Data"),
+    ("Chromium", r"Chromium\User Data"),
+];
+#[cfg(not(any(target_os = "macos", windows)))]
 const PROFILES: &[(&str, &str)] = &[
     ("Chrome", ".config/google-chrome"),
     ("Brave", ".config/BraveSoftware/Brave-Browser"),
@@ -75,7 +84,13 @@ pub fn inspect(name: &str, dir: PathBuf) -> Candidate {
 
 /// Every default browser profile on this machine, in priority order.
 pub fn candidates() -> Vec<Candidate> {
-    let Some(home) = std::env::var_os("HOME").map(PathBuf::from) else {
+    // Windows keeps profiles under %LOCALAPPDATA%; elsewhere the paths are relative to $HOME.
+    let base = if cfg!(windows) {
+        "LOCALAPPDATA"
+    } else {
+        "HOME"
+    };
+    let Some(home) = std::env::var_os(base).map(PathBuf::from) else {
         return Vec::new();
     };
     PROFILES
