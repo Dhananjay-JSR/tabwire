@@ -59,4 +59,20 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cd dist && sha256sum * > SHA256SUMS
-          gh release create "$GITHUB_REF_NAME" -R "$GITHUB_REPOSITORY" --title "tabwire $GITHUB_REF_NAME" --generate-notes *
+          cat > ../notes.md <<'NOTES'
+          ## Install
+
+          Download the file for your system, unpack it and put `tabwire` (`tabwire.exe` on Windows) on your `PATH`:
+
+          | System | File |
+          |---|---|
+          | macOS, Apple Silicon | `aarch64-apple-darwin` |
+          | macOS, Intel | `x86_64-apple-darwin` |
+          | Linux, x86-64 (any distribution) | `x86_64-unknown-linux-musl` |
+          | Linux, ARM64 (any distribution) | `aarch64-unknown-linux-musl` |
+          | Windows, x86-64 | `x86_64-pc-windows-msvc` |
+
+          Then run `tabwire doctor` to check your browser setup. `SHA256SUMS` has the checksums.
+          NOTES
+          sed -i 's/^          //' ../notes.md
+          gh release create "$GITHUB_REF_NAME" -R "$GITHUB_REPOSITORY" --title "tabwire $GITHUB_REF_NAME" --notes-file ../notes.md *
