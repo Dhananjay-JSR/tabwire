@@ -65,7 +65,7 @@ fn real_browser_end_to_end() {
             &format!("http://127.0.0.1:{port}/"),
         ])
         .stdout(Stdio::null())
-        .stderr(Stdio::null())
+        .stderr(Stdio::inherit())
         .spawn()
         .expect("start chrome");
     let mut cleanup = Cleanup(vec![browser], dir.clone());
@@ -73,7 +73,9 @@ fn real_browser_end_to_end() {
     while !dir.join("DevToolsActivePort").exists() {
         assert!(
             Instant::now() < deadline,
-            "chrome never wrote DevToolsActivePort"
+            "chrome never wrote DevToolsActivePort in {}: {:?}",
+            dir.display(),
+            std::fs::read_dir(&dir).map(|d| d.flatten().map(|e| e.file_name()).collect::<Vec<_>>())
         );
         std::thread::sleep(Duration::from_millis(100));
     }
