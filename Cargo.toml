@@ -1,0 +1,18 @@
+[package]
+name = "webmcp-bridge"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Serve the WebMCP tools of the pages open in your browser to any MCP client, over the DevTools protocol"
+repository = "https://github.com/Dhananjay-JSR/webmcp-bridge-rs"
+publish = false
+
+[dependencies]
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
